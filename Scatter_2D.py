@@ -216,7 +216,7 @@ if __name__ == '__main__':
     I = numpy.linalg.inv(matrixz) * matrixv 
     #print(I)
 
-    c0 = Cn(ob, basis, 0, k, I)
+    c0 = Cn(ob, basis, 1, k, I)
     print(c0)
 
 
