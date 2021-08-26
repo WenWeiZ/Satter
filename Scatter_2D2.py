@@ -27,11 +27,13 @@ def Center(point_array):
         x2, y2 = point_array[n+1][1]*np.cos(point_array[n+1][0]), point_array[n+1][1]*np.sin(point_array[n+1][0])
         rho = np.sqrt((x1 + x2) ** 2 / 4 + (y1 + y2) ** 2 / 4)
         phi = np.arctan((y1+y2) / (x1+x2))
+        if (x1+x2) < 0: rho += np.pi 
         c_point.append((phi, rho))
 
     x1, y1 = point_array[0][1]*np.cos(point_array[0][0]), point_array[0][1]*np.sin(point_array[0][0])
     x2, y2 = point_array[-1][1]*np.cos(point_array[-1][0]), point_array[-1][1]*np.sin(point_array[-1][0])
     rho = np.sqrt((x1 + x2) ** 2 / 4 + (y1 + y2) ** 2 / 4)
+    if (x1+x2) < 0: rho += np.pi 
     phi = np.arctan((y1+y2) / (x1+x2))
 
     c_point.append((phi, rho))   
@@ -112,7 +114,7 @@ def Cn(n, c_point, delta_point, k, I):
 if __name__ == '__main__':
 
 
-    number_of_point = 209
+    number_of_point = 128
     kwave = 2*np.pi
 
     phi = np.arange(number_of_point) / number_of_point * 2*np.pi 
