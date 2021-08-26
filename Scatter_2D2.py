@@ -9,20 +9,50 @@ from matplotlib import pyplot as plt
 
 
 def Center(point_array):
-	'''
-	    取中点，返回序列
-	'''
-	num = len(point_array)
-	c_point = []
+    '''
+        取中点，返回序列
+    '''
+    num = len(point_array)
+    c_point = []
+    '''
+    for n in range(num-1):
+        c_point.append(((point_array[n][0]+point_array[(n+1)][0])/2, (point_array[n][1]+point_array[(n+1)][1])/2))
+    c_point.append(((point_array[0][0] + point_array[-1][0])/2 + np.pi, (point_array[0][1]+point_array[-1][1])))
 
-	for n in range(num-1):
-		c_point.append(((point_array[n][0]+point_array[(n+1)][0])/2, (point_array[n][1]+point_array[(n+1)][1])/2))
-	c_point.append(((point_array[0][0] + point_array[-1][0])/2 + np.pi, (point_array[0][1]+point_array[-1][1])))
+    return c_point 
+    '''
 
-	return c_point
+    for n in range(num-1):
+        x1, y1 = point_array[n][1]*np.cos(point_array[n][0]), point_array[n][1]*np.sin(point_array[n][0])
+        x2, y2 = point_array[n+1][1]*np.cos(point_array[n+1][0]), point_array[n+1][1]*np.sin(point_array[n+1][0])
+        rho = np.sqrt((x1 + x2) ** 2 / 4 + (y1 + y2) ** 2 / 4)
+        phi = np.arctan((y1+y2) / (x1+x2))
+        c_point.append((phi, rho))
+
+    x1, y1 = point_array[0][1]*np.cos(point_array[0][0]), point_array[0][1]*np.sin(point_array[0][0])
+    x2, y2 = point_array[-1][1]*np.cos(point_array[-1][0]), point_array[-1][1]*np.sin(point_array[-1][0])
+    rho = np.sqrt((x1 + x2) ** 2 / 4 + (y1 + y2) ** 2 / 4)
+    phi = np.arctan((y1+y2) / (x1+x2))
+
+    c_point.append((phi, rho))   
+
+    return c_point
+def Center2(point_array):
+    '''
+        取中点，返回序列
+    '''
+    num = len(point_array)
+    c_point = []
+
+    for n in range(num-1):
+        c_point.append(((point_array[n][0]+point_array[(n+1)][0])/2, (point_array[n][1]+point_array[(n+1)][1])/2))
+    c_point.append(((point_array[0][0] + point_array[-1][0])/2 + np.pi, (point_array[0][1]+point_array[-1][1])))
+
+    return c_point 
+
 
 def Distance(p1, p2):
-	return np.sqrt(p1[1]**2 + p2[1]**2 - 2*p1[1]*p2[1]*np.cos(p1[0]-p2[0]))
+    return np.sqrt(p1[1]**2 + p2[1]**2 - 2*p1[1]*p2[1]*np.cos(p1[0]-p2[0]))
 
 def Delta(point_array):
 	'''
@@ -82,7 +112,7 @@ def Cn(n, c_point, delta_point, k, I):
 if __name__ == '__main__':
 
 
-    number_of_point = 128
+    number_of_point = 209
     kwave = 2*np.pi
 
     phi = np.arange(number_of_point) / number_of_point * 2*np.pi 
@@ -91,15 +121,23 @@ if __name__ == '__main__':
 
     point = list(zip(phi, rho))
     c_point = Center(point)
+    c_point2 = Center2(point)
+
     delta_point = Delta(point)
 
     Z = matrix_Z(c_point, delta_point, kwave)
     V = matrix_V(c_point, kwave)
+    Z2 = matrix_Z(c_point2, delta_point, kwave)
+    V2 = matrix_V(c_point2, kwave)
 
+
+    I2 = np.linalg.inv(Z2) * V2
     I = np.linalg.inv(Z) * V
-    c0 = Cn(0, c_point, delta_point, kwave, I)
 
-    print(c0)
+
+    c0 = Cn(0, c_point, delta_point, kwave, I)
+    c1 = Cn(0, c_point, delta_point, kwave, I2)
+    print(c0,c1)
     print(special.jv(0, kwave) / special.hankel2(0, kwave))
 
 '''
