@@ -75,6 +75,15 @@ def alpha(n, c_point, delta_point, k):
 
     return matrix   
 
+def RCA(phi, I, c_point, delta_point, k):
+    result = 0
+    num = len(c_point)
+    for n in range(num):
+        result += I[n, 0] * np.exp(1.j * k * c_point[n][1] * np.cos(phi-c_point[n][0])) * delta_point[n]
+
+
+    return abs(result) ** 2
+
 def Cn(n, c_point, delta_point, k, I):
 	alpha_nm = alpha(n, c_point, delta_point, k)
 	return 1/((-1.j) ** n) * alpha_nm * I
@@ -82,8 +91,8 @@ def Cn(n, c_point, delta_point, k, I):
 if __name__ == '__main__':
 
 
-    number_of_point = 128
-    kwave = 2*np.pi
+    number_of_point = 30
+    kwave = 2*np.pi 
 
     phi = np.arange(number_of_point) / number_of_point * 2*np.pi 
     #rho = np.random.rand(number_of_point) + 0.5
@@ -101,6 +110,17 @@ if __name__ == '__main__':
 
     print(c0)
     print(special.jv(0, kwave) / special.hankel2(0, kwave))
+
+    #RCA图
+    x = np.arange(0, 360) / 360 * 2*np.pi
+    y = []
+    for n in range(360):
+        y.append(RCA(x[n], I, c_point, delta_point, kwave))
+    x = [i/np.pi * 180 for i in x]
+
+    y = 10 * np.log10(y)
+    plt.plot(x, y)
+    plt.show()
 
 '''
     x = np.arange(0, 10, 0.1)

@@ -24,7 +24,7 @@ class Object:
         '''
             返回对应角度的长度，向下取最近的离散角度
         '''
-        index = np.sum(phi >= self.phi_array)
+        index = np.sum(phi > self.phi_array)
         return self.r_array[index]
 
 
@@ -67,7 +67,7 @@ def value_Z(Object, Basis, k, m, n):
     '''
     phi = Object.phi_array
     phi = np.hstack((phi, phi[0])) #预处理，头尾相接
-    delta_phi = np.hstack((np.array([x - y for (x, y) in zip(phi[1:], phi[:-1])]), phi[0]+2*np.pi-phi[-1]))
+    #delta_phi = np.hstack((np.array([x - y for (x, y) in zip(phi[1:], phi[:-1])]), phi[0]+2*np.pi-phi[-1]))
     end = Object.len  
 
     primary_function = Basis.value
@@ -92,7 +92,7 @@ def value_Z(Object, Basis, k, m, n):
                 inner_value += (1 - 1.j*2/np.pi*(np.log(gamma*k*distance/4) - 1)) * Fn * delta_phi_n * distance / delta_R    #奇异性处理
             else:
                 distance = Object.distance(phi[k_m+1], phi[k_n+1])
-                inner_value += special.hankel2(0, k * distance) * Fn * delta_phi[k_n]
+                inner_value += special.hankel2(0, k * distance) * Fn * delta_phi_n
             '''debug
             print('m:', k_m, 'n:', k_n)
             print('phi:', phi[k_m], phi[k_n])
@@ -192,7 +192,7 @@ if __name__ == '__main__':
     half_number_of_point = 300
     number_of_point = 2 * half_number_of_point #确保偶数，用于积分离散化的时候可以取到中点
 
-    number_of_Primary_Funcition = 100
+    number_of_Primary_Funcition = 20
     k = 2*np.pi / 0.1
 
     #基函数的离散化角度，在2pi上平均分并创建基函数类basis
@@ -215,9 +215,14 @@ if __name__ == '__main__':
 
     I = numpy.linalg.inv(matrixz) * matrixv 
     #print(I)
-
-    c0 = Cn(ob, basis, 1, k, I)
-    print(c0)
+    c0 = Cn(ob, basis, 0, k, I)
+    c1 = Cn(ob, basis, 5, k, I)
+    c2 = Cn(ob, basis, 10, k, I)
+    c3 = Cn(ob, basis, 15, k, I)
+    c4 = Cn(ob, basis, 20, k, I)
+    c5 = Cn(ob, basis, 60, k, I) 
+    c6 = Cn(ob, basis, 80, k, I)  
+    print(c0,c1,c2,c3,c4,c5,c6)
 
 
 
