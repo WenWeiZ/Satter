@@ -95,7 +95,7 @@ def matrix_V(c_point, k):
     matrix = numpy.matlib.ones((M, 1), dtype=complex)
 
     for m in range(M):
-        matrix[m, 0] = np.exp(1.j*k*c_point[m][1]*np.cos(c_point[m][0]))
+        matrix[m, 0] = np.exp(-1.j*k*c_point[m][1]*np.cos(c_point[m][0]))
 
     return matrix 
 
@@ -104,7 +104,7 @@ def alpha(n, c_point, delta_point, k):
     matrix = numpy.matlib.ones((1, M), dtype=complex) 
 
     for m in range(M):
-        matrix[0, m] = special.jv(n, c_point[m][1]) * np.exp(-1.j*n*c_point[m][0]) * delta_point[m]
+        matrix[0, m] = special.jv(n, k*c_point[m][1]) * np.exp(-1.j*n*c_point[m][0]) * delta_point[m]
 
     return matrix   
 
@@ -124,7 +124,7 @@ def RCA(phi, I, c_point, delta_point, k):
 if __name__ == '__main__':
 
 
-    number_of_point = 128
+    number_of_point = 256
     kwave = 2*np.pi
 
     phi = np.arange(number_of_point) / number_of_point * 2*np.pi 
@@ -143,11 +143,11 @@ if __name__ == '__main__':
     I = np.linalg.inv(Z) * V
 
 
-    c0 = Cn(0, c_point, delta_point, kwave, I)
+    c0 = Cn(1, c_point, delta_point, kwave, I)
 
     print(c0)
-    print(special.jv(0, kwave) / special.hankel2(0, kwave))
-
+    print(special.jv(1, kwave) / special.hankel2(1, kwave))
+'''
     #RCA画图
     x = np.arange(0, 360) / 360 * 2*np.pi
     y = []
@@ -161,7 +161,7 @@ if __name__ == '__main__':
     plt.plot(x, y)
     plt.show()
 
-
+'''
 
 
 

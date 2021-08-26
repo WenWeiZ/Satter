@@ -73,7 +73,7 @@ def alpha(n, c_point, delta_point, k):
 
     for m in range(M):
         R = np.sqrt(c_point[m][0]**2 + c_point[m][1]**2)
-        matrix[0, m] = special.jv(n, R) * np.exp(-1.j*n*(np.arctan(c_point[m][1]/c_point[m][0]) + np.pi*(c_point[m][0] < 0))) * delta_point[m]
+        matrix[0, m] = special.jv(n, k*R) * np.exp(-1.j*n*(np.arctan(c_point[m][1]/c_point[m][0]) + np.pi*(c_point[m][0] < 0))) * delta_point[m]
 
     return matrix   
 
@@ -93,7 +93,7 @@ def RCS(phi, I, c_point, delta_point, k):
 if __name__ == '__main__':
 
 
-    number_of_point = 128
+    number_of_point = 1280
     kwave = 2*np.pi
 
     phi = np.arange(number_of_point) / number_of_point * 2*np.pi 
