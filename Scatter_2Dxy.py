@@ -72,7 +72,8 @@ def alpha(n, c_point, delta_point, k):
     matrix = numpy.matlib.ones((1, M), dtype=complex) 
 
     for m in range(M):
-        matrix[0, m] = special.jv(n, c_point[m][1]) * np.exp(-1.j*n*c_point[m][0]) * delta_point[m]
+        R = np.sqrt(c_point[m][0]**2 + c_point[m][1]**2)
+        matrix[0, m] = special.jv(n, R) * np.exp(-1.j*n*(np.arctan(c_point[m][1]/c_point[m][0]) + np.pi*(c_point[m][0] < 0))) * delta_point[m]
 
     return matrix   
 
@@ -80,7 +81,7 @@ def Cn(n, c_point, delta_point, k, I):
 	alpha_nm = alpha(n, c_point, delta_point, k)
 	return 1/((-1.j) ** n) * alpha_nm * I
 
-def RCA(phi, I, c_point, delta_point, k):
+def RCS(phi, I, c_point, delta_point, k):
     result = 0
     num = len(c_point)
     for n in range(num):
@@ -121,7 +122,7 @@ if __name__ == '__main__':
     y = []
 
     for n in range(360):
-        y.append(RCA(x[n], I, c_point, delta_point, kwave))
+        y.append(RCS(x[n], I, c_point, delta_point, kwave))
 
     x = [i/np.pi*180 for i in x]
 
