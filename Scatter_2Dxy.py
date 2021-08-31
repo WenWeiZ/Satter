@@ -93,7 +93,7 @@ def RCS(phi, I, c_point, delta_point, k):
 if __name__ == '__main__':
 
 
-    number_of_point = 1280
+    number_of_point = 512
     kwave = 2*np.pi
 
     phi = np.arange(number_of_point) / number_of_point * 2*np.pi 
@@ -113,10 +113,10 @@ if __name__ == '__main__':
     I = np.linalg.inv(Z) * V
 
 
-    c0 = Cn(0, c_point, delta_point, kwave, I)
+    c0 = Cn(1, c_point, delta_point, kwave, I)
     print(c0)
-    print(special.j0(kwave) / (special.j0(kwave) - 1.j * special.y0(kwave)))
-
+    print(special.jv(1, kwave) / special.hankel2(1, kwave))
+'''
     #RCA画图
     x = np.arange(0, 360) / 360 * 2*np.pi
     y = []
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     y = 10 * np.log10(y)
     plt.plot(x, y)
     plt.show()
-
+'''
 	
 
 

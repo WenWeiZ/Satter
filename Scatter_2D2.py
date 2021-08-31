@@ -40,6 +40,7 @@ def Center(point_array):
     c_point.append((phi, rho))   
 
     return c_point
+
 def Center2(point_array):
     '''
         取中点，返回序列
@@ -124,7 +125,7 @@ def RCA(phi, I, c_point, delta_point, k):
 if __name__ == '__main__':
 
 
-    number_of_point = 256
+    number_of_point = 512
     kwave = 2*np.pi
 
     phi = np.arange(number_of_point) / number_of_point * 2*np.pi 
