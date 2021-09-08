@@ -77,14 +77,14 @@ def Delta(point_array):
 
 def matrix_Z(c_point, delta_point, k):
 
-    gamma = 1.78107
+    gamma = np.euler_gamma
     M = len(c_point)
     matrix = numpy.matlib.ones((M, M), dtype=complex)
 
     for m in range(M):
     	for n in range(M):
     		if m == n:
-    			matrix[m, n] = delta_point[n] * (1 - 1.j*2/np.pi*(np.log((gamma*k*delta_point[n])/4) - 1))
+    			matrix[m, n] = delta_point[n] * (1 - 1.j*2/np.pi*(np.log((k*delta_point[n])/4) + gamma - 1))
     		else:
     			matrix[m, n] = delta_point[n] * special.hankel2(0, k*Distance(c_point[m], c_point[n]))
 
