@@ -68,7 +68,7 @@ def CM(point, kwave):
 
 if __name__ == '__main__':
 
-	number_of_point = 512
+	number_of_point = 100
 	kwave = 2*np.pi
 
 	phi = np.arange(number_of_point) / number_of_point * 2*np.pi 	
@@ -77,4 +77,5 @@ if __name__ == '__main__':
 
 	point = list(zip(phi, rho))
 
-	print(special.y0(kwave)/special.j0(kwave))
+	#print(special.y0(kwave)/special.j0(kwave))
+	print(CM(point, kwave)[0])
