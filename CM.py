@@ -63,12 +63,16 @@ def CM(point, kwave):
 				Y0[n, m] = special.y0(kwave*d)
 				Y0[m, n] = special.y0(kwave*d)
 
-	return numpy.linalg.eigh(numpy.linalg.inv(J0) * Y0)
+	#print(numpy.linalg.eig(J0)[0])
+	xx = numpy.linalg.inv(J0)
+	print(J0*xx)
+	print(xx-xx.T)
+	return numpy.linalg.eig(numpy.linalg.inv(J0) * Y0)
 
 
 if __name__ == '__main__':
 
-	number_of_point = 100
+	number_of_point = 512
 	kwave = 2*np.pi
 
 	phi = np.arange(number_of_point) / number_of_point * 2*np.pi 	
@@ -77,12 +81,7 @@ if __name__ == '__main__':
 
 	point = list(zip(phi, rho))
 
+
 	#print(special.y0(kwave)/special.j0(kwave))
 	print(CM(point, kwave)[0])
-
-
-
-
-
-
 
