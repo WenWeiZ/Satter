@@ -73,9 +73,16 @@ if __name__ == '__main__':
 
 	phi = np.arange(number_of_point) / number_of_point * 2*np.pi 	
 	#rho = np.random.rand(number_of_point) + 0.5
-	rho = np.ones(number_of_point)
+	rho = np.ones(number_of_point) * 100
 
 	point = list(zip(phi, rho))
 
 	#print(special.y0(kwave)/special.j0(kwave))
 	print(CM(point, kwave)[0])
+
+
+
+
+
+
+

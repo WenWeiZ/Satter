@@ -2,10 +2,12 @@
     三角基MoM计算二维物体远场散射，简化版本
 '''
 import numpy as np 
+import pandas as pd
 import numpy.matlib
 import numpy.linalg
 from scipy import special
 from matplotlib import pyplot as plt
+from tqdm import tqdm
 
 
 def Center(point_array):
@@ -110,8 +112,8 @@ def alpha(n, c_point, delta_point, k):
     return matrix   
 
 def Cn(n, c_point, delta_point, k, I):
-	alpha_nm = alpha(n, c_point, delta_point, k)
-	return 1/((-1.j) ** n) * alpha_nm * I
+    alpha_nm = alpha(n, c_point, delta_point, k)
+    return 1/((-1.j) ** n) * alpha_nm * I
 
 def RCA(phi, I, c_point, delta_point, k):
     result = 0
@@ -121,10 +123,37 @@ def RCA(phi, I, c_point, delta_point, k):
 
     return abs(result)**2
 
+def datamake(datan=10000, number_of_point = 128, kwave=2*np.pi):
+
+    cdata = {'point': [] ,'c0': [], 'c1': [], 'c2': [], 'c3': [], 'c4': [], 'c5':[], 'c6': [], 'c7': []}
+
+    for i in tqdm(range(datan)):      
+        phi = np.arange(number_of_point) / number_of_point * 2*np.pi 
+        rho = 2 * np.random.rand(number_of_point) + 0.5
+
+        point = list(zip(phi, rho))
+
+        cdata['point'].append(point)
+
+        c_point = Center2(point)
+
+        delta_point = Delta(point)
+
+        Z = matrix_Z(c_point, delta_point, kwave)
+        V = matrix_V(c_point, kwave)
+
+        I = np.linalg.inv(Z) * V
+
+        for k in range(8):
+            cdata['c{}'.format(k)].append(Cn(k, c_point, delta_point, kwave, I)[0,0])
+    cdata_pd = pd.DataFrame(cdata)
+    cdata_pd.to_csv('cparameter.csv')
+    print('done!!!')
 
 if __name__ == '__main__':
 
-
+    datamake()
+    '''
     number_of_point = 512
     kwave = 2*np.pi
 
@@ -148,6 +177,7 @@ if __name__ == '__main__':
 
     print(c0)
     print(special.jv(1, kwave) / special.hankel2(1, kwave))
+    '''
 '''
     #RCA画图
     x = np.arange(0, 360) / 360 * 2*np.pi
